@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
-from app.utils import (
+from utils import (
     load_all_models, load_shap_values, load_test_data,
     PLOTLY_TEMPLATE, COLOR_POSITIVE, COLOR_NEGATIVE, models_exist,
     MODEL_DISPLAY_NAMES, MODEL_KEYS,
@@ -17,8 +17,8 @@ from src.utils.io_helpers import load_numpy
 
 MODELS_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "model")
 
-st.set_page_config(page_title="SHAP | Heart Disease", page_icon="🧠", layout="wide")
-st.title("🧠 SHAP Explainability")
+st.set_page_config(page_title="SHAP | Heart Disease", page_icon=None, layout="wide")
+st.title("SHAP Explainability")
 st.markdown("Interpretasi model menggunakan SHAP (SHapley Additive exPlanations).")
 
 if not models_exist():
@@ -50,7 +50,7 @@ with st.spinner("Menghitung SHAP values..."):
     shap_values = get_shap_vals(model_key)
 
 # ── Global: Mean SHAP Bar ────────────────────────────────────────
-st.subheader("🌍 Global Feature Importance (Mean |SHAP|)")
+st.subheader("Global Feature Importance (Mean |SHAP|)")
 summary = get_summary_data(shap_values, feature_columns)
 summary_df = pd.DataFrame({
     "Feature": summary["features"][:15],
@@ -66,7 +66,7 @@ fig_global.update_layout(yaxis=dict(autorange="reversed"))
 st.plotly_chart(fig_global, use_container_width=True)
 
 # ── Global: SHAP Beeswarm (matplotlib) ──────────────────────────
-st.subheader("🐝 Beeswarm Plot")
+st.subheader("Beeswarm Plot")
 try:
     import shap
     X_train = load_numpy(os.path.join(MODELS_DIR, "X_train.npy"))
@@ -91,7 +91,7 @@ except Exception as e:
 st.markdown("---")
 
 # ── Local: Waterfall ─────────────────────────────────────────────
-st.subheader("🔍 Local Explanation — Satu Prediksi")
+st.subheader("Local Explanation — Satu Prediksi")
 sample_idx = st.number_input(
     f"Pilih index sampel (0 – {len(X_test)-1}):",
     min_value=0, max_value=len(X_test) - 1, value=0, step=1,

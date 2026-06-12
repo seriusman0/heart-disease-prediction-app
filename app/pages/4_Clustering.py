@@ -6,17 +6,17 @@ import numpy as np
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
-from app.utils import (
+from utils import (
     load_all_models, load_clustering_data, load_raw_df,
     PLOTLY_TEMPLATE, COLOR_POSITIVE, COLOR_NEGATIVE, models_exist,
 )
 from src.utils.io_helpers import load_numpy
 from src.models.clustering import get_pca_projection, get_cluster_profiles
 
-MODELS_DIR = os.path.join(os.path.dirname(__file__), "../.. /model")
+MODELS_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "model")
 
-st.set_page_config(page_title="Clustering | Heart Disease", page_icon="🔵", layout="wide")
-st.title("🔵 Analisis Clustering K-Means")
+st.set_page_config(page_title="Clustering | Heart Disease", page_icon=None, layout="wide")
+st.title("Analisis Clustering K-Means")
 
 if not models_exist():
     st.error("Model artifacts tidak ditemukan. Jalankan `python scripts/train_pipeline.py`.")
@@ -62,7 +62,7 @@ with col2:
 st.markdown("---")
 
 # ── PCA Scatter ──────────────────────────────────────────────────
-st.subheader("🗺️ Visualisasi Cluster (PCA 2D)")
+st.subheader("Visualisasi Cluster (PCA 2D)")
 
 try:
     X_all = load_numpy(os.path.join(MODELS_DIR, "X_all_scaled.npy"))
@@ -88,7 +88,7 @@ except Exception as e:
 st.markdown("---")
 
 # ── Cluster Profiles ─────────────────────────────────────────────
-st.subheader("📋 Profil Cluster")
+st.subheader("Profil Cluster")
 df_raw = load_raw_df()
 
 try:

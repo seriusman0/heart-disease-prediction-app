@@ -4,12 +4,12 @@ import numpy as np
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
-from app.utils import load_all_models, PLOTLY_TEMPLATE, COLOR_POSITIVE, COLOR_NEGATIVE, models_exist, MODEL_KEYS
+from utils import load_all_models, PLOTLY_TEMPLATE, COLOR_POSITIVE, COLOR_NEGATIVE, models_exist, MODEL_KEYS
 from src.data.preprocessor import transform_single_row
 from src.explainability.shap_explainer import get_explainer, get_single_prediction_shap
 
-st.set_page_config(page_title="Prediction | Heart Disease", page_icon="🫀", layout="wide")
-st.title("🫀 Prediksi Risiko Penyakit Jantung")
+st.set_page_config(page_title="Prediction | Heart Disease", page_icon=None, layout="wide")
+st.title("Prediksi Risiko Penyakit Jantung")
 st.markdown("Masukkan data pasien untuk mendapatkan prediksi risiko penyakit jantung.")
 
 if not models_exist():
@@ -20,7 +20,7 @@ artifacts = load_all_models()
 
 # ── Input Form ───────────────────────────────────────────────────
 with st.form("prediction_form"):
-    st.subheader("📋 Data Pasien")
+    st.subheader("Data Pasien")
 
     col1, col2, col3 = st.columns(3)
     with col1:
@@ -45,7 +45,7 @@ with st.form("prediction_form"):
         st_slope = st.selectbox("ST_Slope", ["Up", "Flat", "Down"])
         model_choice = st.selectbox("Model Prediksi", ["XGBoost", "Random Forest", "Logistic Regression"])
 
-    submitted = st.form_submit_button("🔍 Prediksi Sekarang", type="primary", use_container_width=True)
+    submitted = st.form_submit_button("Prediksi Sekarang", type="primary", use_container_width=True)
 
 # ── Prediction ───────────────────────────────────────────────────
 if submitted:
@@ -74,15 +74,15 @@ if submitted:
     prediction = int(prob >= 0.5)
 
     st.markdown("---")
-    st.subheader("📊 Hasil Prediksi")
+    st.subheader("Hasil Prediksi")
 
     col_res1, col_res2 = st.columns([1, 2])
 
     with col_res1:
         if prediction == 1:
-            st.error(f"⚠️ **Risiko Tinggi Penyakit Jantung**\nProbabilitas: {prob:.1%}")
+            st.error(f" **Risiko Tinggi Penyakit Jantung**\nProbabilitas: {prob:.1%}")
         else:
-            st.success(f"✅ **Risiko Rendah Penyakit Jantung**\nProbabilitas: {prob:.1%}")
+            st.success(f" **Risiko Rendah Penyakit Jantung**\nProbabilitas: {prob:.1%}")
 
         risk_level = "Tinggi" if prob >= 0.7 else ("Sedang" if prob >= 0.4 else "Rendah")
         st.metric("Probabilitas Risiko", f"{prob:.1%}", delta=f"Risiko {risk_level}")
@@ -114,7 +114,7 @@ if submitted:
         st.plotly_chart(fig_gauge, use_container_width=True)
 
     # SHAP for this prediction
-    st.subheader("🔍 Kontribusi Fitur (SHAP)")
+    st.subheader("Kontribusi Fitur (SHAP)")
     try:
         from src.utils.io_helpers import load_numpy
         import matplotlib.pyplot as plt

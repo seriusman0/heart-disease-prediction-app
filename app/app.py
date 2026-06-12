@@ -2,16 +2,16 @@ import streamlit as st
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from app.utils import models_exist
+from utils import models_exist
 
 st.set_page_config(
     page_title="Heart Disease Risk Prediction",
-    page_icon="❤️",
+    page_icon=None,
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
-st.sidebar.title("❤️ Heart Disease\nRisk Prediction")
+st.sidebar.title("Heart Disease\nRisk Prediction")
 st.sidebar.markdown("---")
 st.sidebar.markdown(
     """
@@ -24,12 +24,11 @@ Dataset: Heart Failure Prediction (Kaggle)
 
 if not models_exist():
     st.warning(
-        "⚠️ Model artifacts not found. "
-        "Run `python scripts/train_pipeline.py` first.",
-        icon="⚠️",
+        " Model artifacts not found. "
+        "Run `python notebook/train_pipeline.py` first.",
     )
 
-st.title("❤️ Prediksi Risiko Penyakit Jantung")
+st.title("Prediksi Risiko Penyakit Jantung")
 st.markdown(
     """
 Selamat datang di aplikasi **Prediksi dan Segmentasi Risiko Penyakit Jantung**

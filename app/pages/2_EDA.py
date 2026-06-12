@@ -5,10 +5,10 @@ import pandas as pd
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
-from app.utils import load_raw_df, PLOTLY_TEMPLATE, COLOR_PALETTE, COLOR_POSITIVE, COLOR_NEGATIVE
+from utils import load_raw_df, PLOTLY_TEMPLATE, COLOR_PALETTE, COLOR_POSITIVE, COLOR_NEGATIVE
 
-st.set_page_config(page_title="EDA | Heart Disease", page_icon="🔍", layout="wide")
-st.title("🔍 Eksplorasi Data (EDA)")
+st.set_page_config(page_title="EDA | Heart Disease", page_icon=None, layout="wide")
+st.title("Eksplorasi Data (EDA)")
 
 df_raw = load_raw_df()
 
@@ -21,13 +21,13 @@ view = st.radio("Tampilkan data:", ["Data Asli", "Data Setelah Preprocessing"], 
 df = df_raw if view == "Data Asli" else df_clean
 
 # ── Statistics ───────────────────────────────────────────────────
-st.subheader("📈 Statistik Deskriptif")
+st.subheader("Statistik Deskriptif")
 st.dataframe(df.describe().round(2), use_container_width=True)
 
 st.markdown("---")
 
 # ── Missing / Zero Values ────────────────────────────────────────
-st.subheader("🔎 Nilai Nol & Missing")
+st.subheader("Nilai Nol & Missing")
 col1, col2 = st.columns(2)
 with col1:
     nulls = df.isnull().sum().reset_index()
@@ -43,7 +43,7 @@ with col2:
 st.markdown("---")
 
 # ── Distribution Plots ───────────────────────────────────────────
-st.subheader("📊 Distribusi Fitur Numerik")
+st.subheader("Distribusi Fitur Numerik")
 numeric_cols = ["Age", "RestingBP", "Cholesterol", "MaxHR", "Oldpeak"]
 selected_num = st.selectbox("Pilih fitur numerik:", numeric_cols)
 fig_hist = px.histogram(
@@ -57,7 +57,7 @@ fig_hist = px.histogram(
 st.plotly_chart(fig_hist, use_container_width=True)
 
 # ── Categorical ──────────────────────────────────────────────────
-st.subheader("📊 Distribusi Fitur Kategorikal")
+st.subheader("Distribusi Fitur Kategorikal")
 cat_cols = ["Sex", "ChestPainType", "RestingECG", "ExerciseAngina", "ST_Slope", "FastingBS"]
 selected_cat = st.selectbox("Pilih fitur kategorikal:", cat_cols)
 cat_counts = df.groupby([selected_cat, "HeartDisease"]).size().reset_index(name="count")
@@ -72,7 +72,7 @@ st.plotly_chart(fig_bar, use_container_width=True)
 st.markdown("---")
 
 # ── Correlation Heatmap ──────────────────────────────────────────
-st.subheader("🔥 Heatmap Korelasi")
+st.subheader("Heatmap Korelasi")
 num_df = df[["Age", "RestingBP", "Cholesterol", "FastingBS", "MaxHR", "Oldpeak", "HeartDisease"]]
 corr = num_df.corr().round(2)
 fig_corr = px.imshow(
@@ -86,7 +86,7 @@ st.plotly_chart(fig_corr, use_container_width=True)
 st.markdown("---")
 
 # ── Box Plots ────────────────────────────────────────────────────
-st.subheader("📦 Box Plot Fitur Numerik vs HeartDisease")
+st.subheader("Box Plot Fitur Numerik vs HeartDisease")
 selected_box = st.selectbox("Pilih fitur untuk box plot:", numeric_cols, key="box")
 df_box = df.copy()
 df_box["HeartDisease"] = df_box["HeartDisease"].map({0: "No Disease", 1: "Heart Disease"})
@@ -103,7 +103,7 @@ st.plotly_chart(fig_box, use_container_width=True)
 st.markdown("---")
 
 # ── Scatter Age vs MaxHR ─────────────────────────────────────────
-st.subheader("🔵 Age vs MaxHR (colored by HeartDisease)")
+st.subheader("Age vs MaxHR (colored by HeartDisease)")
 df_scatter = df.copy()
 df_scatter["HeartDisease"] = df_scatter["HeartDisease"].map({0: "No Disease", 1: "Heart Disease"})
 fig_scatter = px.scatter(

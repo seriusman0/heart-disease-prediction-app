@@ -6,14 +6,14 @@ import numpy as np
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
-from app.utils import (
+from utils import (
     load_all_models, load_eval_results, load_test_data,
     PLOTLY_TEMPLATE, COLOR_POSITIVE, COLOR_NEGATIVE, models_exist,
 )
 from src.models.evaluator import get_feature_importances
 
-st.set_page_config(page_title="Model Performance | Heart Disease", page_icon="📈", layout="wide")
-st.title("📈 Evaluasi Model Klasifikasi")
+st.set_page_config(page_title="Model Performance | Heart Disease", page_icon=None, layout="wide")
+st.title("Evaluasi Model Klasifikasi")
 
 if not models_exist():
     st.error("Model artifacts tidak ditemukan. Jalankan `python scripts/train_pipeline.py`.")
@@ -24,7 +24,7 @@ results = load_eval_results()
 X_test, y_test = load_test_data()
 
 # ── Comparison Table ─────────────────────────────────────────────
-st.subheader("🏆 Perbandingan Semua Model")
+st.subheader("Perbandingan Semua Model")
 compare_rows = []
 for key, name in [("logistic_regression", "Logistic Regression"),
                   ("random_forest", "Random Forest"),
@@ -64,7 +64,7 @@ st.plotly_chart(fig_compare, use_container_width=True)
 st.markdown("---")
 
 # ── Per-Model Detail ─────────────────────────────────────────────
-st.subheader("🔬 Detail Per Model")
+st.subheader("Detail Per Model")
 tab_lr, tab_rf, tab_xgb = st.tabs(["Logistic Regression", "Random Forest", "XGBoost"])
 
 model_map = {

@@ -1,12 +1,16 @@
 """
-Training pipeline — run once to produce all model artifacts in models/.
-Usage: python scripts/train_pipeline.py
+Training pipeline — run once to produce all model artifacts in model/.
+Usage: python notebook/train_pipeline.py
 """
 import sys
 import os
 
-# Allow imports from project root
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+# app/ must be in sys.path so src.* resolves to app/src/
+_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
+_APP = os.path.join(_ROOT, "app")
+for _p in (_APP, _ROOT):
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
 
 import numpy as np
 from src.data.loader import load_raw_data

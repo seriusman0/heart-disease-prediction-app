@@ -2,10 +2,12 @@
 import os
 import sys
 
-# Allow imports from project root
-ROOT = os.path.join(os.path.dirname(__file__), "..")
-if ROOT not in sys.path:
-    sys.path.insert(0, ROOT)
+# Ensure app/ is in sys.path so src.* resolves to app/src/
+APP_DIR = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.join(APP_DIR, "..")
+for _p in (APP_DIR, ROOT):
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
 
 import streamlit as st
 from src.utils.io_helpers import load_model, load_json, load_numpy

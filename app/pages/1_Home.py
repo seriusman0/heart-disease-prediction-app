@@ -3,17 +3,17 @@ import plotly.express as px
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
-from app.utils import load_raw_df, PLOTLY_TEMPLATE, COLOR_PALETTE
+from utils import load_raw_df, PLOTLY_TEMPLATE, COLOR_PALETTE
 from src.data.loader import describe_dataset
 
-st.set_page_config(page_title="Home | Heart Disease", page_icon="🏠", layout="wide")
-st.title("🏠 Beranda — Ringkasan Proyek")
+st.set_page_config(page_title="Home | Heart Disease", page_icon=None, layout="wide")
+st.title("Beranda — Ringkasan Proyek")
 
 df = load_raw_df()
 info = describe_dataset(df)
 
 # ── Dataset Summary ──────────────────────────────────────────────
-st.subheader("📊 Ringkasan Dataset")
+st.subheader("Ringkasan Dataset")
 c1, c2, c3, c4 = st.columns(4)
 c1.metric("Total Record", info["n_rows"])
 c2.metric("Fitur", info["n_features"])
@@ -21,7 +21,7 @@ c3.metric("Positif (HeartDisease=1)", info["n_positive"])
 c4.metric("Kolesterol = 0 (akan diimputasi)", info["zero_cholesterol"])
 
 # ── Class Balance ────────────────────────────────────────────────
-st.subheader("⚖️ Distribusi Kelas Target")
+st.subheader("Distribusi Kelas Target")
 col_a, col_b = st.columns([1, 2])
 with col_a:
     balance_df = {
@@ -57,7 +57,7 @@ with col_b:
     st.dataframe(feat_df, use_container_width=True, hide_index=True)
 
 # ── CRISP-DM Phases ──────────────────────────────────────────────
-st.subheader("🔄 Tahapan CRISP-DM")
+st.subheader("Tahapan CRISP-DM")
 phases = [
     ("1. Business Understanding", "Definisi masalah: deteksi dini penyakit jantung untuk intervensi medis."),
     ("2. Data Understanding", "EDA: distribusi, korelasi, outlier, nilai nol pada Kolesterol."),
@@ -71,5 +71,5 @@ for title, desc in phases:
         st.write(desc)
 
 # ── Raw Data Preview ─────────────────────────────────────────────
-st.subheader("📋 Sampel Data")
+st.subheader("Sampel Data")
 st.dataframe(df.head(10), use_container_width=True)
