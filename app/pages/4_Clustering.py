@@ -13,7 +13,7 @@ from app.utils import (
 from src.utils.io_helpers import load_numpy
 from src.models.clustering import get_pca_projection, get_cluster_profiles
 
-MODELS_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "models")
+MODELS_DIR = os.path.join(os.path.dirname(__file__), "../.. /model")
 
 st.set_page_config(page_title="Clustering | Heart Disease", page_icon="🔵", layout="wide")
 st.title("🔵 Analisis Clustering K-Means")

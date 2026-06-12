@@ -21,7 +21,7 @@ from src.explainability.shap_explainer import get_explainer, compute_shap_values
 from src.utils.io_helpers import save_model, save_json, save_numpy
 
 DATASET_PATH = os.path.join(os.path.dirname(__file__), "..", "dataset", "heart.csv")
-MODELS_DIR = os.path.join(os.path.dirname(__file__), "..", "models")
+MODELS_DIR = os.path.join(os.path.dirname(__file__), "..", "model")
 
 
 def main():
@@ -92,7 +92,7 @@ def main():
 
     print("\n" + "=" * 60)
     print("Training complete. All artifacts saved to models/")
-    print("Run: streamlit run app/main.py")
+    print("Run: streamlit run app/app.py")
     print("=" * 60)
 
 

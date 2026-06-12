@@ -120,7 +120,7 @@ if submitted:
         import matplotlib.pyplot as plt
         import shap
 
-        MODELS_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "models")
+        MODELS_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "model")
         X_train = load_numpy(os.path.join(MODELS_DIR, "X_train.npy"))
 
         explainer = get_explainer(model, X_train[:100])

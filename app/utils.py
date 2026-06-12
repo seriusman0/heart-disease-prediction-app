@@ -10,7 +10,7 @@ if ROOT not in sys.path:
 import streamlit as st
 from src.utils.io_helpers import load_model, load_json, load_numpy
 
-MODELS_DIR = os.path.join(ROOT, "models")
+MODELS_DIR = os.path.join(ROOT, "model")
 DATASET_PATH = os.path.join(ROOT, "dataset", "heart.csv")
 
 PLOTLY_TEMPLATE = "plotly_white"

@@ -15,7 +15,7 @@ from app.utils import (
 from src.explainability.shap_explainer import get_explainer, compute_shap_values, get_summary_data
 from src.utils.io_helpers import load_numpy
 
-MODELS_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "models")
+MODELS_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "model")
 
 st.set_page_config(page_title="SHAP | Heart Disease", page_icon="🧠", layout="wide")
 st.title("🧠 SHAP Explainability")
