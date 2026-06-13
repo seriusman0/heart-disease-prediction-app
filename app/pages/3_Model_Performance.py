@@ -63,6 +63,62 @@ st.plotly_chart(fig_compare, use_container_width=True)
 
 st.markdown("---")
 
+# ── Gbr 4: Feature Importance XGBoost (standalone) ───────────────
+st.subheader("Tingkat Kepentingan Fitur (XGBoost)")
+fi_xgb_df = get_feature_importances(artifacts["xgb"], feature_columns).head(15)
+fig_fi_main = px.bar(
+    fi_xgb_df, x="importance", y="feature", orientation="h",
+    template=PLOTLY_TEMPLATE,
+    title="Tingkat Kepentingan Fitur — XGBoost (Top 15)",
+    color="importance",
+    color_continuous_scale="Reds",
+)
+fig_fi_main.update_layout(yaxis=dict(autorange="reversed"), coloraxis_showscale=False)
+st.plotly_chart(fig_fi_main, use_container_width=True)
+st.caption("Gbr. 4 — Grafik Tingkat Kepentingan Fitur dari atribut medis terpilih (model XGBoost).")
+
+st.markdown("---")
+
+# ── Gbr 7: Komparasi Metrik Kinerja semua model ───────────────────
+st.subheader("Komparasi Metrik Kinerja — Semua Model")
+fig_compare.update_layout(
+    title="Gbr. 7 — Komparasi Metrik Kinerja (Akurasi, Presisi, Recall, F1-Score)",
+    yaxis=dict(range=[0.7, 1.0]),
+)
+st.plotly_chart(fig_compare, use_container_width=True)
+st.caption("Gbr. 7 — Diagram Batang komparasi metrik kinerja (Akurasi, Presisi, Recall, F1-Score) antara Logistic Regression, Random Forest, dan XGBoost.")
+
+st.markdown("---")
+
+# ── Gbr 8: Confusion Matrix XGBoost (standalone) ─────────────────
+st.subheader("Confusion Matrix — XGBoost")
+cm_xgb = np.array(results["xgboost"]["confusion_matrix"])
+fig_cm_xgb = px.imshow(
+    cm_xgb,
+    labels=dict(x="Predicted", y="Actual"),
+    x=["No Disease", "Heart Disease"],
+    y=["No Disease", "Heart Disease"],
+    text_auto=True,
+    color_continuous_scale="Blues",
+    template=PLOTLY_TEMPLATE,
+    title=f"Confusion Matrix XGBoost — Accuracy: {results['xgboost']['accuracy']:.4f}  |  F1: {results['xgboost']['f1']:.4f}  |  AUC: {results['xgboost']['roc_auc']:.4f}",
+)
+fig_cm_xgb.update_coloraxes(showscale=False)
+fig_cm_xgb.update_layout(height=420)
+col_cm, col_info = st.columns([2, 1])
+with col_cm:
+    st.plotly_chart(fig_cm_xgb, use_container_width=True)
+    st.caption("Gbr. 8 — Visualisasi Confusion Matrix model XGBoost.")
+with col_info:
+    xr = results["xgboost"]
+    cm_xgb_arr = np.array(xr["confusion_matrix"])
+    st.metric("True Negative (TN)", int(cm_xgb_arr[0,0]))
+    st.metric("False Positive (FP)", int(cm_xgb_arr[0,1]))
+    st.metric("False Negative (FN)", int(cm_xgb_arr[1,0]))
+    st.metric("True Positive (TP)", int(cm_xgb_arr[1,1]))
+
+st.markdown("---")
+
 # ── Per-Model Detail ─────────────────────────────────────────────
 st.subheader("Detail Per Model")
 tab_lr, tab_rf, tab_xgb = st.tabs(["Logistic Regression", "Random Forest", "XGBoost"])

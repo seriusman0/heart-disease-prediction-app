@@ -59,10 +59,18 @@ with col2:
     )
     st.plotly_chart(fig_sil, use_container_width=True)
 
+st.caption("Gbr. 5 — Kurva Elbow (kiri) dan Grafik Silhouette Score (kanan) untuk penentuan jumlah cluster optimal.")
+
 st.markdown("---")
 
 # ── PCA Scatter ──────────────────────────────────────────────────
 st.subheader("Visualisasi Cluster (PCA 2D)")
+
+CLUSTER_RISK_LABELS = {
+    "0": "Klaster 0 — Risiko Rendah",
+    "1": "Klaster 1 — Risiko Moderat",
+    "2": "Klaster 2 — Risiko Kritis",
+}
 
 try:
     X_all = load_numpy(os.path.join(MODELS_DIR, "X_all_scaled.npy"))
@@ -72,16 +80,23 @@ try:
     df_pca = pd.DataFrame({
         "PC1": pca_coords[:, 0],
         "PC2": pca_coords[:, 1],
-        "Cluster": labels.astype(str),
+        "Cluster": [CLUSTER_RISK_LABELS.get(str(l), str(l)) for l in labels],
     })
 
     fig_pca = px.scatter(
         df_pca, x="PC1", y="PC2", color="Cluster",
+        color_discrete_map={
+            "Klaster 0 — Risiko Rendah":  "#2B2D42",
+            "Klaster 1 — Risiko Moderat": "#F4A261",
+            "Klaster 2 — Risiko Kritis":  "#E84545",
+        },
         template=PLOTLY_TEMPLATE,
-        title=f"Distribusi Cluster (k={optimal_k}) — PCA 2D",
+        title=f"Sebaran Pasien berdasarkan Profil Risiko — PCA 2D (k={optimal_k})",
         opacity=0.75,
     )
+    fig_pca.update_layout(legend_title="Profil Risiko")
     st.plotly_chart(fig_pca, use_container_width=True)
+    st.caption("Gbr. 6 — Plot Sebaran PCA 2 Dimensi: pemetaan pasien ke dalam tiga profil risiko berdasarkan K-Means.")
 except Exception as e:
     st.warning(f"Tidak dapat memuat data PCA: {e}")
 
@@ -105,6 +120,13 @@ try:
 
     profiles = get_cluster_profiles(df_num_subset, labels_subset)
     st.dataframe(profiles, use_container_width=True)
+
+    st.markdown("""
+**Interpretasi Profil Klaster:**
+- **Klaster 0 — Risiko Rendah**: Didominasi individu muda dan sehat, nilai MaxHR tinggi, Oldpeak rendah, prevalensi penyakit jantung rendah.
+- **Klaster 1 — Risiko Moderat**: Menunjukkan fluktuasi kolesterol, usia menengah, dengan prevalensi penyakit jantung sedang.
+- **Klaster 2 — Risiko Kritis**: Kapasitas detak jantung sangat rendah (MaxHR rendah), usia lanjut, Oldpeak tinggi — prevalensi penyakit jantung tertinggi.
+""")
 
     # HeartDisease prevalence per cluster
     df_num_subset_copy = df_num_subset.copy()

@@ -72,16 +72,20 @@ st.plotly_chart(fig_bar, use_container_width=True)
 st.markdown("---")
 
 # ── Correlation Heatmap ──────────────────────────────────────────
-st.subheader("Heatmap Korelasi")
+st.subheader("Matriks Korelasi Pearson")
 num_df = df[["Age", "RestingBP", "Cholesterol", "FastingBS", "MaxHR", "Oldpeak", "HeartDisease"]]
-corr = num_df.corr().round(2)
+corr = num_df.corr(method="pearson").round(2)
 fig_corr = px.imshow(
     corr, text_auto=True, template=PLOTLY_TEMPLATE,
     color_continuous_scale="RdBu_r",
-    title="Matriks Korelasi Fitur Numerik",
+    title="Matriks Korelasi Pearson — Fitur Medis vs Target (HeartDisease)",
     zmin=-1, zmax=1,
 )
+fig_corr.update_layout(
+    coloraxis_colorbar=dict(title="Pearson r"),
+)
 st.plotly_chart(fig_corr, use_container_width=True)
+st.caption("Gbr. 3 — Matriks Korelasi Pearson antar fitur medis dengan variabel target penyakit jantung.")
 
 st.markdown("---")
 

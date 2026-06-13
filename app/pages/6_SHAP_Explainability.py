@@ -50,7 +50,7 @@ with st.spinner("Menghitung SHAP values..."):
     shap_values = get_shap_vals(model_key)
 
 # ── Global: Mean SHAP Bar ────────────────────────────────────────
-st.subheader("Global Feature Importance (Mean |SHAP|)")
+st.subheader("SHAP Summary Plot — Global Feature Importance")
 summary = get_summary_data(shap_values, feature_columns)
 summary_df = pd.DataFrame({
     "Feature": summary["features"][:15],
@@ -60,13 +60,14 @@ fig_global = px.bar(
     summary_df, x="Mean |SHAP|", y="Feature", orientation="h",
     color="Mean |SHAP|", color_continuous_scale="Reds",
     template=PLOTLY_TEMPLATE,
-    title="Top 15 Fitur berdasarkan Mean Absolute SHAP Value",
+    title="SHAP Summary Plot — Top 15 Fitur berdasarkan Mean |SHAP Value|",
 )
-fig_global.update_layout(yaxis=dict(autorange="reversed"))
+fig_global.update_layout(yaxis=dict(autorange="reversed"), coloraxis_showscale=False)
 st.plotly_chart(fig_global, use_container_width=True)
+st.caption("Gbr. 9 — Grafik SHAP Summary Plot: kontribusi rata-rata setiap fitur medis terhadap prediksi model.")
 
 # ── Global: SHAP Beeswarm (matplotlib) ──────────────────────────
-st.subheader("Beeswarm Plot")
+st.subheader("SHAP Beeswarm Plot")
 try:
     import shap
     X_train = load_numpy(os.path.join(MODELS_DIR, "X_train.npy"))
